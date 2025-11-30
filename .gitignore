@@ -1,1 +1,21 @@
+# 📌 Fichiers sensibles
 .env
+.env.local
+.env.*.local
+
+# 📌 Cache
+/vendor/
+/composer.lock
+
+# 📌 Uploads (photos de profil)
+public/upload/
+public/upload/*
+
+# 📌 Logs
+*.log
+logs/
+storage/logs
+
+# 📌 Fichiers temporaires
+*.cache
+*.tmp

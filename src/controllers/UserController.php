@@ -128,6 +128,54 @@ class UserController
     }
 
     // ============================================================
+    // 📌 4) Endpoint : /users/update (Méthode: PUT ou POST)
+    // ============================================================
+
+    public function updateUser() {
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+
+        if (!$data) {
+            return $this->response(400, ["error" => "JSON invalide."]);
+        }
+
+        if (!isset($data["uid"]) || empty(trim($data["uid"]))) {
+            return $this->response(400, ["error" => "UID manquant."]);
+        }
+
+        $uid = $data["uid"];
+
+        if (!$this->userModel->userExists($uid)) {
+            return $this->response(404, ["error" => "Utilisateur introuvable."]);
+        }
+
+        $allowedFields = ["first_name", "last_name", "phone", "photo_url"];
+
+        $updateData = ["uid" => $uid];
+
+        foreach ($allowedFields as $field) {
+            if (isset($data[$field])) {
+                $updateData[$field] = $data[$field];
+            }
+        }
+
+        $success = $this->userModel->updateUser($updateData);
+
+        if (!$success) {
+            return $this->response(500, ["error" => "Erreur lors de la mise à jour."]);
+        }
+
+        // 🔥 RENVOIE LE USER À JOUR APRÈS UPDATE
+        $updatedUser = $this->userModel->getUserByUid($uid);
+
+        return $this->response(200, [
+            "success" => true,
+            "message" => "Profil mis à jour avec succès.",
+            "user" => $updatedUser
+        ]);
+    }
+
+    // ============================================================
     // 🔧 Fonction helper pour simplifier les réponses
     // ============================================================
     private function response(int $statusCode, array $body)

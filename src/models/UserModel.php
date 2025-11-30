@@ -57,4 +57,23 @@ class UserModel
         ]);
     }
 
+    public function updateUser(array $data): bool {
+        $sql = "UPDATE users SET 
+                    first_name = :first_name,
+                    last_name  = :last_name,
+                    phone      = :phone,
+                    photo_url  = :photo_url
+                WHERE uid = :uid";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([
+            ':uid'        => $data['uid'],
+            ':first_name' => $data['first_name'] ?? null,
+            ':last_name'  => $data['last_name'] ?? null,
+            ':phone'      => $data['phone'] ?? null,
+            ':photo_url'  => $data['photo_url'] ?? null,
+        ]);
+    }
+
 }

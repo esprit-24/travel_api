@@ -4,40 +4,47 @@ require_once __DIR__ . '/../src/controllers/UserController.php';
 
 $controller = new UserController();
 
-// Récupération de l’URI SANS query string
+// --- CORS / Flutter Web FIX ---
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
+// Récupération URI sans query string
 $uri = strtok($_SERVER["REQUEST_URI"], '?');
 $method = $_SERVER["REQUEST_METHOD"];
 
-// On enlève le préfixe du projet automatiquement
-$basePath = "/esprit/travel_api/public/index.php";  // Ajustez selon votre configuration
+// Préfixe fixe
+$basePath = "/esprit/travel_api/public/index.php";
 
-// On crée la route relative
+// Route relative
 $route = str_replace($basePath, "", $uri);
 
 // -------------------------------
 // 🔥 ROUTES
 // -------------------------------
 
-// /users/create   (POST)
 if ($route === "/users/create" && $method === "POST") {
     $controller->createUser();
     exit;
 }
 
-// /users/get   (GET)
 if ($route === "/users/get" && $method === "GET") {
     $controller->getUserByUid();
     exit;
 }
 
-// /users/upload-photo   (POST)
 if ($route === "/users/upload-photo" && $method === "POST") {
     $controller->uploadPhoto();
     exit;
 }
 
+if ($route === "/users/update" && ($method === "PUT" || $method === "POST")) {
+    $controller->updateUser();
+    exit;
+}
 
-// Si aucune route ne correspond
+// 404
 http_response_code(404);
 echo json_encode(["error" => "Route inconnue: $route"]);
 exit;
