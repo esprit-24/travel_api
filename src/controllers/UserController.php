@@ -14,8 +14,8 @@ class UserController
     // ============================================================
     // 📌 1) Endpoint : /users/create   (Méthode: POST)
     // ============================================================
-    public function createUser()
-    {
+
+    public function createUser(){
         // Récupération du JSON envoyé depuis Flutter
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
@@ -55,8 +55,8 @@ class UserController
     // ============================================================
     // 📌 2) Endpoint : /users/get?uid=xxx (Méthode: GET)
     // ============================================================
-    public function getUserByUid()
-    {
+
+    public function getUserByUid(){
         if (!isset($_GET["uid"])) {
             return $this->response(400, ["error" => "Paramètre UID manquant."]);
         }
@@ -115,16 +115,18 @@ class UserController
         // Déplacement fichier
         move_uploaded_file($file["tmp_name"], $filePath);
 
-        // URL publique
-        $publicUrl = "http://localhost/esprit/travel_api/public/upload/" . $fileName;
+        // ✅ Chemin RELATIF (indépendant de la plateforme)
+        $relativePath = "upload/" . $fileName;
 
-        // Mise à jour de la BDD
-        $this->userModel->updatePhotoUrl($uid, $publicUrl);
+        // Mise à jour de la BDD avec le CHEMIN
+        $this->userModel->updatePhotoUrl($uid, $relativePath);
 
+        // Réponse API
         return $this->response(200, [
             "success" => true,
-            "photoUrl" => $publicUrl
+            "photoPath" => $relativePath
         ]);
+
     }
 
     // ============================================================
@@ -178,11 +180,12 @@ class UserController
     // ============================================================
     // 🔧 Fonction helper pour simplifier les réponses
     // ============================================================
-    private function response(int $statusCode, array $body)
-    {
+
+    private function response(int $statusCode, array $body){
         http_response_code($statusCode);
         header('Content-Type: application/json');
         echo json_encode($body);
         exit;
     }
+
 }

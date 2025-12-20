@@ -4,12 +4,6 @@ require_once __DIR__ . '/../src/controllers/UserController.php';
 
 $controller = new UserController();
 
-// --- CORS / Flutter Web FIX ---
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit;
-}
-
 // Récupération URI sans query string
 $uri = strtok($_SERVER["REQUEST_URI"], '?');
 $method = $_SERVER["REQUEST_METHOD"];
