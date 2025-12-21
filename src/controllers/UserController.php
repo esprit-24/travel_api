@@ -178,6 +178,20 @@ class UserController
     }
 
     // ============================================================
+    // 📌 5) Endpoint : /users (Méthode: GET)
+    // ============================================================
+
+    public function getAllUsers() {
+        $users = $this->userModel->getAllUsers();
+
+        if (empty($users)) {
+            return $this->response(404, ["error" => "Aucun utilisateur trouvé."]);
+        }
+
+        return $this->response(200, $users);
+    }
+
+    // ============================================================
     // 🔧 Fonction helper pour simplifier les réponses
     // ============================================================
 

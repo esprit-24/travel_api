@@ -76,4 +76,10 @@ class UserModel
         ]);
     }
 
+    public function getAllUsers(): array {
+        $sql = "SELECT * FROM users";
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

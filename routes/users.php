@@ -37,3 +37,8 @@ if ($route === "/users/update" && ($method === "PUT" || $method === "POST")) {
     $controller->updateUser();
     exit;
 }
+
+if ($route === "/users" && $method === "GET") {
+    $controller->getAllUsers();
+    exit;
+}
