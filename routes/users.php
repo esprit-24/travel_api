@@ -37,8 +37,3 @@ if ($route === "/users/update" && ($method === "PUT" || $method === "POST")) {
     $controller->updateUser();
     exit;
 }
-
-// 404
-http_response_code(404);
-echo json_encode(["error" => "Route inconnue: $route"]);
-exit;
