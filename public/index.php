@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // Routes
 require_once __DIR__ . '/../routes/users.php';
 require_once __DIR__ . '/../routes/destinations.php';
+require_once __DIR__ . '/../routes/trips.php';
 
 // 🔴 SI AUCUNE ROUTE N’A MATCHÉ
 http_response_code(404);
